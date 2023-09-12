@@ -61,9 +61,34 @@ func (t *data) Umschreiben (i int, newdone bool, newtitel, newdeadline string){
 		}
 	}
 
+func (t* data) Löschen (i int) {
+	if len(t.done)>i && i>=0 {
+		var donenew []bool
+		donenew = append(donenew, t.done[:i]...)
+		donenew = append(donenew, t.done[i+1:]...)
+		t.done = donenew
+		var titelnew []string
+		titelnew = append(titelnew, t.titel[:i]...)
+		titelnew = append(titelnew, t.titel[i+1:]...)
+		t.titel = titelnew
+		var deadlinenew []string
+		deadlinenew = append(deadlinenew, t.deadline[:i]...)
+		deadlinenew = append(deadlinenew, t.deadline[i+1:]...)
+		t.deadline = deadlinenew
+	}
+}
 
+func (t*data) UmschreibenTitel (i int, newtitel string){
+	if len(t.done)>i && i>=0 {
+		t.titel[i] = newtitel
+	}
+}
 
-
+func (t*data) UmschreibenDeadline (i int, newdeadline string){
+	if len(t.done)>i && i>=0 {
+		t.deadline[i] = newdeadline
+	}
+}
 
 
 
