@@ -8,84 +8,98 @@ type data struct {
 	titel []string
 	done []bool
 	deadline []string
+	casenum int
 }
 
 
 
-func New(user, name string) *data {
+func New(user, name string, casenum int) *data {
 	var t *data
 	t = new(data)
 	t.user = user
 	t.name = name
+	t.casenum = casenum
 	return t
 }
 
-func (t *data) String (casenum int) string {
+func (t *data) String () string {
 	var erg string
 	erg = erg + fmt.Sprintln(t.name)
 	erg = erg + fmt.Sprintln(t.user)
-	//Ansicht:alles iwie ungeordnet
-	if casenum <=2{			//Zahl noch bearbeiten
-		switch casenum{
-			case 0://alles eif iwie
-				for i:=0;i<len(t.titel);i++{
-					erg = erg + "("
-					if t.done[i] {
-						erg = erg + "x) "
-					} else {
-						erg = erg + " ) "
-					}
-					erg = erg + t.titel[i] + " "
+	switch t.casenum{
+		case 0://alles eif iwie
+			for i:=0;i<len(t.titel);i++{
+				erg = erg + "("
+				if t.done[i] {
+					erg = erg + "x) "
+				} else {
+					erg = erg + " ) "
+				}
+				erg = erg + t.titel[i] + " "
+				erg = erg + fmt.Sprintln(t.deadline[i])
+			}
+		case 1: //alle false(unerledigt)
+			for i:=0;i<len(t.titel);i++{
+				if t.done[i]{
+				} else {
+					erg = erg + "( ) " + t.titel[i] + " "
 					erg = erg + fmt.Sprintln(t.deadline[i])
 				}
-			case 1: //alle false(unerledigt)
-				for i:=0;i<len(t.titel);i++{
-					if t.done[i]=false {
-						erg = erg + "( ) " + t.titel[i] + " "
-						erg = erg + fmt.Sprintln(t.deadline[i])
-					}
-				}
-			case 2: //alle erledigten true
-				for i:=0;i<len(t.titel);i++{
-					if t.done[i] {
-						erg = erg + "(x) " + t.titel[i]
-						erg = erg + fmt.Sprintln(t.deadline[i])
-					}
-				}
-			case 3: //alle geordnet nach done
-				var unerledigtdone []bool
-				var erledigtdone []bool
-				var unerledigttitel []string
-				var erledigttitel []string
-				var unerledigtdeadline []string
-				var erledigtdeadline []string
-				for i:=0;i<len(t.titel);i++{
-					if t.done[i] {
-						erledigtdone = append(erledigtdone, t.done[i])
-						erledigttitel = append(erledigttitel, t.titel[i])
-						erledigtdeadline = append(erledigtdeadline, t.deadline[i])
-					} else{
-						unerledigtdone = append(unerledigtdone, t.done[i])
-						unerledigttitel = append(unerledigttitel, t.titel[i])
-						unerledigtdeadline = append(unerledigtdeadline, t.deadline[i])
-					}
-				t.done = append(t.done, unerledigtdone[], erledigtdone[]...)
-				t.titel = append(t.titel, unerledigttitel[], erledigttitel[]...)
-				t.deadline = append(t.deadline, unerledigtdeadline[], erledigtdeadline[]...)
-				for i:=0;i<len(t.titel);i++{
-					erg = erg + "("
-					if t.done[i] {
-						erg = erg + "x) "
-					} else {
-						erg = erg + " ) "
-					}
-					erg = erg + t.titel[i] + " "
+			}
+		case 2: //alle erledigten true
+			for i:=0;i<len(t.titel);i++{
+				if t.done[i] {
+					erg = erg + "(x) " + t.titel[i]
 					erg = erg + fmt.Sprintln(t.deadline[i])
-				}		
-		}
+				}
+			}
+		case 3: //alle geordnet nach done
+			var unerledigtdone []bool
+			var erledigtdone []bool
+			var unerledigttitel []string
+			var erledigttitel []string
+			var unerledigtdeadline []string
+			var erledigtdeadline []string
+			for i:=0;i<len(t.titel);i++{
+				if t.done[i] {
+					erledigtdone = append(erledigtdone, t.done[i])
+					erledigttitel = append(erledigttitel, t.titel[i])
+					erledigtdeadline = append(erledigtdeadline, t.deadline[i])
+				} else{
+					unerledigtdone = append(unerledigtdone, t.done[i])
+					unerledigttitel = append(unerledigttitel, t.titel[i])
+					unerledigtdeadline = append(unerledigtdeadline, t.deadline[i])
+				}
+			}
+			var donenew []bool
+			var titelnew []string
+			var deadlinenew []string
+			donenew = append(donenew, unerledigtdone...)
+			donenew = append(donenew, erledigtdone...)
+			titelnew = append(titelnew, unerledigttitel...)
+			titelnew = append(titelnew, erledigttitel...)
+			deadlinenew = append(deadlinenew, unerledigtdeadline...)
+			deadlinenew = append(deadlinenew, erledigtdeadline	...)
+			t.done = donenew
+			t.titel = titelnew
+			t.deadline = deadlinenew
+			for i:=0;i<len(t.titel);i++{
+				erg = erg + "("
+				if t.done[i] {
+					erg = erg + "x) "
+				} else {
+					erg = erg + " ) "
+				}
+				erg = erg + t.titel[i] + " "
+				erg = erg + fmt.Sprintln(t.deadline[i])
+			}
 	}
 	return erg
-}
+}		
+
+
+
+
 	
 func (t *data) NewItem (titel, deadline string, done bool) {
 	t.done = append(t.done, done)
