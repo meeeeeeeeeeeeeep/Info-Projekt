@@ -13,4 +13,5 @@ type ToDo interface {
 	Löschen (i int)
 	UmschreibenTitel (i int, newtitel string)
 	UmschreibenDeadline (i int, newdeadline string)
+	ChangeView(nom int)
 }

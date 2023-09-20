@@ -13,13 +13,17 @@ type data struct {
 
 
 
-func New(user, name string, casenum int) *data {
+func New(user, name string) *data {
 	var t *data
 	t = new(data)
 	t.user = user
 	t.name = name
-	t.casenum = casenum
+	t.casenum = 0
 	return t
+}
+
+func (t *data) ChangeView(nom int) {
+	t.casenum = nom
 }
 
 func (t *data) String () string {
@@ -97,10 +101,6 @@ func (t *data) String () string {
 	return erg
 }		
 
-
-
-
-	
 func (t *data) NewItem (titel, deadline string, done bool) {
 	t.done = append(t.done, done)
 	t.titel = append(t.titel, titel)
