@@ -11,8 +11,6 @@ type data struct {
 	casenum int
 }
 
-
-
 func New(user, name string) *data {
 	var t *data
 	t = new(data)
