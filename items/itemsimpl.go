@@ -20,6 +20,20 @@ func New(titel, deadline string) *data {
 	return f
 }
 
+func (f *data) RückgabeDone() bool{
+	var d bool
+	d = f.done
+	return d
+}
+
+func (f *data) SwitchDone () {
+			if f.done{
+				f.done = false
+			} else {
+				f.done = true
+			}
+}
+
 func (f *data) SetzeWerte(x, y uint16, r, g, b, r2, g2, b2 uint8, index int, done bool){
 	f.done = done
 	f.x = x
@@ -32,6 +46,16 @@ func (f *data) SetzeWerte(x, y uint16, r, g, b, r2, g2, b2 uint8, index int, don
 	f.gh2 = g2
 	f.bh2 = b2
 } 
+
+func (f *data) String () string{
+	var e string
+	if f.done{
+		e = e + "(x)"
+	} else {
+		e = e + "( )"
+	}
+	e = e + " " + f.titel + " " + f.deadline
+}
 
 func (f *data) Draw() {
 	if f.index%2==0 {

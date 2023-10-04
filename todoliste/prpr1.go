@@ -6,9 +6,10 @@ import ("fmt"
 type data struct {
 	user string
 	name string
-	titel []string
-	done []bool
-	deadline []string
+	//titel []string
+	//done []bool
+	//deadline []string
+	it []item.Item
 	casenum int
 }
 
@@ -17,12 +18,18 @@ func New(user, name string) *data {
 	t = new(data)
 	t.user = user
 	t.name = name
-	t.casenum = 0
+	//t.casenum = 0
 	return t
 }
 
+
+
 func (t *data) ChangeView(nom int) {
 	t.casenum = nom
+}
+
+func (t *data) AddItem(it item.Item) {
+	t.it = append(t.it, it)
 }
 
 func (t *data) String () string {
@@ -31,80 +38,54 @@ func (t *data) String () string {
 	erg = erg + fmt.Sprintln(t.user)
 	switch t.casenum{
 		case 0://alles eif iwie
-			for i:=0;i<len(t.titel);i++{
-				erg = erg + "("
-				if t.done[i] {
-					erg = erg + "x) "
-				} else {
-					erg = erg + " ) "
-				}
-				erg = erg + t.titel[i] + " "
-				erg = erg + fmt.Sprintln(t.deadline[i])
+			for i:=0;i<len(t.it);i++{
+				erg = erg + fmt.Sprintln(t.it[i])
 			}
 		case 1: //alle false(unerledigt)
-			for i:=0;i<len(t.titel);i++{
-				if t.done[i]{
+			for i:=0;i<len(t.it);i++{
+				if t.it[i].RückgabeDone(){
 				} else {
-					erg = erg + "( ) " + t.titel[i] + " "
-					erg = erg + fmt.Sprintln(t.deadline[i])
+					erg = erg + fmt.Sprintln(t.it[i])
 				}
 			}
 		case 2: //alle erledigten true
-			for i:=0;i<len(t.titel);i++{
-				if t.done[i] {
-					erg = erg + "(x) " + t.titel[i]
-					erg = erg + fmt.Sprintln(t.deadline[i])
+			for i:=0;i<len(t.it);i++{
+				if t.it[i].RückgabeDone(){
+					erg = erg + fmt.Sprintln(t.it[i])
 				}
 			}
-		case 3: //alle geordnet nach done
-			var unerledigtdone []bool
-			var erledigtdone []bool
-			var unerledigttitel []string
-			var erledigttitel []string
-			var unerledigtdeadline []string
-			var erledigtdeadline []string
-			for i:=0;i<len(t.titel);i++{
-				if t.done[i] {
-					erledigtdone = append(erledigtdone, t.done[i])
-					erledigttitel = append(erledigttitel, t.titel[i])
-					erledigtdeadline = append(erledigtdeadline, t.deadline[i])
+		case 3://nach done geordnet
+			var ndone []item.Item
+			var ydone []item.Item
+			for i:=0;i<len(t.it);i++{
+				if t.it[i].RückgabeDone(){
+					ydone = append(ydone, t.it[i])
 				} else{
-					unerledigtdone = append(unerledigtdone, t.done[i])
-					unerledigttitel = append(unerledigttitel, t.titel[i])
-					unerledigtdeadline = append(unerledigtdeadline, t.deadline[i])
+					ndone = append(ndone, t.it[i])
 				}
-			}
-			var donenew []bool
-			var titelnew []string
-			var deadlinenew []string
-			donenew = append(donenew, unerledigtdone...)
-			donenew = append(donenew, erledigtdone...)
-			titelnew = append(titelnew, unerledigttitel...)
-			titelnew = append(titelnew, erledigttitel...)
-			deadlinenew = append(deadlinenew, unerledigtdeadline...)
-			deadlinenew = append(deadlinenew, erledigtdeadline	...)
-			t.done = donenew
-			t.titel = titelnew
-			t.deadline = deadlinenew
-			for i:=0;i<len(t.titel);i++{
-				erg = erg + "("
-				if t.done[i] {
-					erg = erg + "x) "
-				} else {
-					erg = erg + " ) "
+			var itnew []item.Item
+			itnew = append(itnew, ndone...)
+			itnew = append(itnew, ydone...)
+			t.it = itnew
+			erg = erg + fmt.Sprintln(t.it[i])
+		case 4://nach done geordnet 2
+			var ndone []item.Item
+			var ydone []item.Item
+			for i:=0;i<len(t.it);i++{
+				if t.it[i].RückgabeDone(){
+					ydone = append(ydone, t.it[i])
+				} else{
+					ndone = append(ndone, t.it[i])
 				}
-				erg = erg + t.titel[i] + " "
-				erg = erg + fmt.Sprintln(t.deadline[i])
-			}
+			var itnew []item.Item
+			itnew = append(itnew, ydone...)
+			itnew = append(itnew, ndone...)
+			t.it = itnew
+			erg = erg + fmt.Sprintln(t.it[i])
+		}
 	}
 	return erg
 }		
-
-func (t *data) NewItem (titel, deadline string, done bool) {
-	t.done = append(t.done, done)
-	t.titel = append(t.titel, titel)
-	t.deadline = append(t.deadline, deadline)
-}
 
 func (t *data) SwitchDone (i int) {
 		if len(t.done)>i && i>=0 {
@@ -125,19 +106,11 @@ func (t *data) Umschreiben (i int, newdone bool, newtitel, newdeadline string){
 	}
 
 func (t* data) Löschen (i int) {
-	if len(t.done)>i && i>=0 {
-		var donenew []bool
-		donenew = append(donenew, t.done[:i]...)
-		donenew = append(donenew, t.done[i+1:]...)
-		t.done = donenew
-		var titelnew []string
-		titelnew = append(titelnew, t.titel[:i]...)
-		titelnew = append(titelnew, t.titel[i+1:]...)
-		t.titel = titelnew
-		var deadlinenew []string
-		deadlinenew = append(deadlinenew, t.deadline[:i]...)
-		deadlinenew = append(deadlinenew, t.deadline[i+1:]...)
-		t.deadline = deadlinenew
+	if len(t.it)>i && i>=0 {
+		var itnew []item.Item
+		itnew = append(itnew, t.it[:i]...)
+		itnew = append(itnew, t.it[i+1:]...)
+		t.it = itnew
 	}
 }
 
