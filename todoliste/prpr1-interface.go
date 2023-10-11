@@ -1,7 +1,6 @@
 package todoliste
 
 
-
 // New(user, name string)
 
 
@@ -14,4 +13,26 @@ type ToDo interface {
 	UmschreibenDeadline (i int, newdeadline string)
 	ChangeView(nom int)
 	AddItem(it item.Item)
+	UmschreibenDone (i int, newdone bool)
+
 }
+
+func (
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

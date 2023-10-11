@@ -34,6 +34,24 @@ func (f *data) SwitchDone () {
 			}
 }
 
+func (f *data) UmschreibenAlles (done bool, deadline, titel string) {
+	f.done = done
+	f.deadline = deadline
+	f.titel = titel
+}
+
+func (f *data) UmschreibenTitel (titel string) {
+	f.titel = titel
+}
+
+func (f *data) UmschreibenDeadline (deadline string) {
+	f.deadline = deadline
+}
+
+func (f *data) UmschreibenDone (done bool) {
+	f.done = done
+}
+
 func (f *data) SetzeWerte(x, y uint16, r, g, b, r2, g2, b2 uint8, index int, done bool){
 	f.done = done
 	f.x = x
@@ -99,6 +117,15 @@ func (f *data) Draw() {
 	SetzeFont("../fonts/LiberationMono-Bold.ttf", 18)
 	SchreibeFont(110, f.y+55, f.deadline)
 }
+
+func (f *data) MausAufDone(mx, my uint16) bool{
+	return (int(mx)-55)*(int(mx)-55)+(int(my)-f.y+40)*(int(my)-f.y+40)<=30*30
+}
+
+func (f *data) MausAufItem(my uint16) bool{
+	return f.y<=my&&my<=f.y+80
+}
+	
 
 	
 

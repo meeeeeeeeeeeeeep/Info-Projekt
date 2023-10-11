@@ -6,9 +6,6 @@ import ("fmt"
 type data struct {
 	user string
 	name string
-	//titel []string
-	//done []bool
-	//deadline []string
 	it []item.Item
 	casenum int
 }
@@ -18,11 +15,18 @@ func New(user, name string) *data {
 	t = new(data)
 	t.user = user
 	t.name = name
-	//t.casenum = 0
 	return t
 }
 
-
+func (t *data) DrawListe() {
+	
+	
+	
+	
+	
+	SetzeFont("../fonts/LiberationMono-Bold.ttf", 30)
+	Stiftfarbe(0, 0, 0)
+	SchreibeFont(25, 10, f.name)
 
 func (t *data) ChangeView(nom int) {
 	t.casenum = nom
@@ -88,22 +92,12 @@ func (t *data) String () string {
 }		
 
 func (t *data) SwitchDone (i int) {
-		if len(t.done)>i && i>=0 {
-			if t.done[i]{
-				t.done[i] = false
-			} else {
-				t.done[i] = true
-			}
-		}
+	t.it[i].SwitchDone()
 }
 
 func (t *data) Umschreiben (i int, newdone bool, newtitel, newdeadline string){
-	if len(t.done)>i && i>=0 {
-			t.titel[i]=newtitel
-			t.done[i] = newdone
-			t.deadline[i] = newdeadline
-		}
-	}
+	t.it[i].UmschreibenAlles(newdone, newdeadline, newtitel)
+}
 
 func (t* data) Löschen (i int) {
 	if len(t.it)>i && i>=0 {
@@ -115,15 +109,15 @@ func (t* data) Löschen (i int) {
 }
 
 func (t*data) UmschreibenTitel (i int, newtitel string){
-	if len(t.done)>i && i>=0 {
-		t.titel[i] = newtitel
-	}
+	t.it[i].UmschreibenTitel(newtitel)
 }
 
 func (t*data) UmschreibenDeadline (i int, newdeadline string){
-	if len(t.done)>i && i>=0 {
-		t.deadline[i] = newdeadline
-	}
+	t.it[i].UmschreibenDeadline(newdeadline)
+}
+
+func (t*data) UmschreibenDone (i int, newdone bool){
+	t.it[i].UmschreibenDone(newdone)
 }
 
 
