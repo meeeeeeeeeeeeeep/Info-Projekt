@@ -27,6 +27,7 @@ func (t *data) DrawListe() {
 	SetzeFont("../fonts/LiberationMono-Bold.ttf", 30)
 	Stiftfarbe(0, 0, 0)
 	SchreibeFont(25, 10, f.name)
+}
 
 func (t *data) ChangeView(nom int) {
 	t.casenum = nom
@@ -35,6 +36,11 @@ func (t *data) ChangeView(nom int) {
 func (t *data) AddItem(it item.Item) {
 	t.it = append(t.it, it)
 }
+
+func (t *data) Highlighter(mx, my uint16) {
+	
+
+
 
 func (t *data) String () string {
 	var erg string

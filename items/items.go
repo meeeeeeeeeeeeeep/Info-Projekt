@@ -4,9 +4,9 @@ type Item interface {
 
  Draw()
  
- SetzeWerte(x, y uint16, r, g, b, r2, g2, b2 uint8, index int, done bool)
- 
- New(titel, deadline string)
+ SetzeWerte(x, y uint16, r, g, b, r2, g2, b2 uint8, index int, done bool, r3,g3,b3 uint8)
+  
+ SetzeHighlight(highlight bool)
  
  RückgabeDone() bool
  
