@@ -1,10 +1,10 @@
-package item
+package items
 
 type Item interface {
 
  Draw()
  
- SetzeWerte(x, y uint16, r, g, b, r2, g2, b2 uint8, index int, done bool, r3,g3,b3 uint8)
+ SetzeWerte(x, y uint16, r, g, b, r2, g2, b2 uint8, index int, done bool, r3, g3, b3 uint8, highlight bool)
   
  SetzeHighlight(highlight bool)
  

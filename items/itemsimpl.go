@@ -1,4 +1,4 @@
-package item
+package items
 
 import( ."gfx2")
 
@@ -23,9 +23,7 @@ func New(titel, deadline string) *data {
 }
 
 func (f *data) RückgabeDone() bool{
-	var d bool
-	d = f.done
-	return d
+	return f.done
 }
 
 func (f *data) SwitchDone () {
@@ -54,7 +52,7 @@ func (f *data) UmschreibenDone (done bool) {
 	f.done = done
 }
 
-func (f *data) SetzeWerte(x, y uint16, r, g, b, r2, g2, b2 uint8, index int, done bool, r3, g3, b3 uint8){
+func (f *data) SetzeWerte(x, y uint16, r, g, b, r2, g2, b2 uint8, index int, done bool, r3, g3, b3 uint8, highlight bool){
 	f.done = done
 	f.x = x
 	f.y = y
@@ -68,6 +66,7 @@ func (f *data) SetzeWerte(x, y uint16, r, g, b, r2, g2, b2 uint8, index int, don
 	f.rh3 = r3
 	f.gh3 = g3
 	f.bh3 = b3
+	f.highlight = highlight
 } 
 
 func (f *data) String () string{
